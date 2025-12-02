@@ -1,3 +1,179 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+This is a Laravel 12 application focused on **code quality and linting**, demonstrating automated verification tools for AI-generated and human-written code. The project uses Livewire with Volt for interactivity, Flux UI for components, and Laravel Fortify for authentication.
+
+## Essential Commands
+
+### Development
+```bash
+# Start full development environment (server, queue, logs, vite)
+composer run dev
+
+# Run individual services
+php artisan serve                    # Development server
+php artisan queue:listen --tries=1   # Queue worker
+php artisan pail --timeout=0         # Real-time logs
+npm run dev                          # Vite dev server
+```
+
+### Code Quality & Linting
+```bash
+# Run all quality checks (recommended before commits)
+composer check-all
+
+# Individual checks
+composer pint-test     # Laravel Pint code style check
+composer phpstan       # PHPStan static analysis (Level 5)
+composer phpmd         # PHPMD code quality analysis
+composer check:queries # Query pattern validation
+
+# Auto-fix code style issues
+composer fix           # Runs Laravel Pint to fix formatting
+```
+
+### Testing
+```bash
+# Run all tests
+php artisan test
+
+# Run specific test file
+php artisan test tests/Feature/Auth/AuthenticationTest.php
+
+# Run tests matching a filter
+php artisan test --filter=testName
+```
+
+### Frontend
+```bash
+npm run build          # Production build
+npm run dev            # Development server with hot reload
+```
+
+### Initial Setup
+```bash
+composer setup         # Full setup: install deps, generate key, migrate, build assets
+```
+
+## Architecture & Structure
+
+### Laravel 12 Specifics
+- **Streamlined structure**: No `app/Console/Kernel.php` or `app/Http/Middleware/` directory
+- **Configuration centralized** in `bootstrap/app.php` for routing, middleware, and exceptions
+- **Console commands** auto-register from `app/Console/Commands/` (if created)
+- **Service providers** listed in `bootstrap/providers.php`
+
+### Code Quality Tools Configuration
+
+**PHPStan** (`phpstan.neon`):
+- Level 5 analysis
+- Scans: `app/`, `config/`, `database/`, `routes/`
+- Excludes: `app/Console/Kernel.php` (doesn't exist in Laravel 12)
+
+**PHPMD** (`phpmd.xml`):
+- Enforces: Clean Code, Code Size, Controversial, Design, Naming, Unused Code
+- Laravel-specific exclusions: `StaticAccess`, `ElseExpression`, `TooManyMethods`, `ShortVariable`, `LongVariable`
+
+**Laravel Pint**:
+- Uses Laravel preset (default)
+- Auto-fixes code style issues
+
+### N+1 Query Prevention
+The application has **triple defense** against N+1 queries:
+
+1. **Model::preventLazyLoading()** - Enabled in non-production (`AppServiceProvider`)
+2. **Laravel Query Detector** - Real-time detection in local environment
+3. **Laravel Telescope** - Visual query monitoring at `/telescope`
+
+### Application Structure
+
+**Authentication** (Laravel Fortify):
+- Views: `resources/views/livewire/auth/`
+- Components: Class-based Livewire components (no Volt in auth)
+- Custom actions: `app/Actions/Fortify/`
+- Features enabled: registration, password reset, email verification, 2FA
+
+**Settings Pages** (Livewire):
+- Components: `app/Livewire/Settings/`
+- Views: `resources/views/livewire/settings/`
+- Routes: Grouped under `/settings/*` prefix with `auth` middleware
+
+**Frontend**:
+- **Flux UI (v2)** components for UI (`<flux:button>`, `<flux:input>`, etc.)
+- **Tailwind CSS v4** with CSS-first configuration
+- **Livewire v3** for interactivity
+- Custom Blade components: `resources/views/components/`
+- Layouts: `resources/views/components/layouts/`
+
+**Database**:
+- SQLite by default (for development)
+- Migrations in `database/migrations/`
+- Session storage: database
+- Queue connection: database
+
+**Testing**:
+- **Pest v4** (not PHPUnit)
+- Feature tests: `tests/Feature/`
+- Unit tests: `tests/Unit/`
+- Coverage: Auth flows, Settings, Dashboard
+
+### Important Configuration
+
+**Environment**:
+- Locale: Korean (`ko`) with English fallback
+- Faker locale: `ko_KR`
+- Debug mode enabled in local
+- Telescope enabled only in local environment
+
+**Services**:
+- Queue: Database driver
+- Cache: Database driver
+- Session: Database driver
+- Mail: SMTP (port 2525 for local)
+
+## Development Guidelines
+
+### Code Quality Enforcement
+- **Always run `composer fix`** before committing to auto-format code
+- **Run `composer check-all`** to verify all quality checks pass
+- PHPStan Level 5 must pass - no type errors allowed
+- PHPMD rules enforced - watch for code complexity warnings
+
+### N+1 Query Detection
+- Check logs for `⚠️ N+1 Query detected` warnings during development
+- Use eager loading (`with()`) for relationships
+- Monitor Telescope dashboard at `/telescope` for query analysis
+
+### Testing Requirements
+- Write Pest tests (not PHPUnit syntax)
+- Use `php artisan test --filter=testName` to run specific tests after changes
+- All feature tests should test happy paths, failure paths, and edge cases
+
+### Livewire Development
+- Follow existing component patterns (class-based, not Volt)
+- Use `$this->validate()` for inline validation
+- Dispatch events with `$this->dispatch('event-name', param: $value)`
+- Use `wire:model.live` for real-time updates (Livewire v3)
+
+### Frontend Development
+- Use Flux UI components when available
+- Tailwind v4 CSS-first configuration (no `tailwind.config.js`)
+- Dark mode support via `dark:` classes
+- Run `npm run build` if changes don't reflect (or ask user to run `npm run dev`)
+
+### Common Pitfalls
+- **Don't** use `env()` directly in code - only in config files
+- **Don't** create new models without factories and appropriate seeders
+- **Don't** bypass validation - always use Form Requests or inline `validate()`
+- **Don't** use `DB::` for queries when Eloquent relationships exist
+- **Do** check sibling files for existing patterns before creating new structures
+- **Do** use array-based validation rules (check existing Form Requests for pattern)
+
+===
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
@@ -113,6 +289,14 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
+
+
+=== herd rules ===
+
+## Laravel Herd
+
+- The application is served by Laravel Herd and will be available at: https?://[kebab-case-project-dir].test. Use the `get-absolute-url` tool to generate URLs for the user to ensure valid URLs.
+- You must not run any commands to make the site available via HTTP(s). It is _always_ available through Laravel Herd.
 
 
 === tests rules ===
