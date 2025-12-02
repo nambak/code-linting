@@ -1,8 +1,11 @@
 # code-liting
 
-![Code Quality](https://github.com/사용자명/저장소명/actions/workflows/code-quality.yml/badge.svg)
+![Code Quality](https://github.com/nambak/code-linting/actions/workflows/code-quality.yml/badge.svg)
 ![PHP Version](https://img.shields.io/badge/PHP-8.2-blue)
-![Laravel](https://img.shields.io/badge/Laravel-11.x-red)
+![Laravel](https://img.shields.io/badge/Laravel-12.x-red)
+![PHPStan Level 5](https://img.shields.io/badge/PHPStan-level%205-brightgreen)
+![Code Style](https://img.shields.io/badge/code%20style-pint-orange)
+
 
 ## 🔍 코드 품질 검증
 
