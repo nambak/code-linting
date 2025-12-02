@@ -10,11 +10,14 @@ parameters:
 
     level: 5
 
-    # IDE Helper 파일 스캔
+    # IDE Helper 파일이 있으면 스캔 (없어도 오류 발생 안함)
     scanFiles:
         - _ide_helper.php
         - _ide_helper_models.php
         - .phpstorm.meta.php
+
+    # 존재하지 않는 파일 스캔 오류 무시
+    reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
         # Livewire 매직 메서드

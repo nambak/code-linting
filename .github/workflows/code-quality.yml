@@ -28,6 +28,12 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
+      - name: Generate IDE Helper files
+        run: |
+          php artisan ide-helper:generate || true
+          php artisan ide-helper:models --nowrite || true
+          php artisan ide-helper:meta || true
+
       - name: Run Laravel Pint
         run: composer pint-test
 
