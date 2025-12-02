@@ -16,7 +16,16 @@ jobs:
           extensions: mbstring, pdo, sqlite
           coverage: pcov
 
-      - name: Install dependencies
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install Node Dependencies
+        run: npm install
+
+      - name: Install Composer Dependencies
         run: composer install --prefer-dist --no-progress
 
       - name: Copy .env
@@ -33,6 +42,9 @@ jobs:
           php artisan ide-helper:generate || true
           php artisan ide-helper:models --nowrite || true
           php artisan ide-helper:meta || true
+
+      - name: Build Frontend Assets
+        run: npm run build
 
       - name: Run Tests with Coverage
         run: composer test:coverage
