@@ -29,7 +29,8 @@
         "pestphp/pest": "^4.1",
         "pestphp/pest-plugin-laravel": "^4.0",
         "phpmd/phpmd": "^2.15",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "vimeo/psalm": "^6.13"
     },
     "autoload": {
         "psr-4": {
@@ -85,6 +86,10 @@
         "phpstan": "phpstan analyse --memory-limit=2G",
         "phpmd": "phpmd app,config,database,routes text phpmd.xml --exclude app/Providers/Filament",
         "check:queries": "php artisan check:queries",
+        "psalm": "psalm --no-progress",
+        "psalm:taint": "psalm --taint-analysis --no-progress",
+        "audit": "composer audit --no-dev",
+        "fix": "pint",
         "check-code": [
             "Composer\\Config::disableProcessTimeout",
             "@pint-test",
@@ -96,10 +101,11 @@
             "Composer\\Config::disableProcessTimeout",
             "@pint-test",
             "@phpstan",
+            "@psalm:taint",
             "@phpmd",
-            "@check:queries"
-        ],
-        "fix": "pint"
+            "@check:queries",
+            "@audit"
+        ]
     },
     "extra": {
         "laravel": {

@@ -40,8 +40,14 @@ jobs:
       - name: Run PHPStan
         run: composer phpstan
 
+      - name: Run Psalm Taint Analysis
+        run: composer psalm:taint
+
       - name: Run PHPMD
         run: composer phpmd
 
       - name: Check Query Patterns
         run: composer run check:queries
+
+      - name: Check Dependencies Vulnerabilities
+        run: composer audit --no-dev

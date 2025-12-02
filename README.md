@@ -4,7 +4,9 @@
 ![PHP Version](https://img.shields.io/badge/PHP-8.3-blue)
 ![Laravel](https://img.shields.io/badge/Laravel-12.x-red)
 ![PHPStan Level 5](https://img.shields.io/badge/PHPStan-level%205-brightgreen)
+![Psalm Level 5](https://img.shields.io/badge/Psalm-level%205-blueviolet)
 ![Code Style](https://img.shields.io/badge/code%20style-pint-orange)
+![Security](https://img.shields.io/badge/security-composer%20audit-green)
 
 
 ## 🔍 코드 품질 검증
@@ -17,9 +19,11 @@ AI 생성 코드를 포함하여 다음 도구들로 자동 검증합니다:
 | 도구 | 목적 | 감지 항목 | 실행 시점 |
 |------|------|-----------|-----------|
 | 🎨 Laravel Pint | 코드 스타일 통일 | PSR-12, Laravel 컨벤션 | 커밋 전 / CI/CD |
-| 🔬 PHPStan | 타입 안전성 검증 | 타입 오류, null 참조, 메서드 호출 오류 | 커밋 전 / CI/CD |
+| 🔬 PHPStan Level 5 | 타입 안전성 검증 | 타입 오류, null 참조, 메서드 호출 오류 | 커밋 전 / CI/CD |
+| 🔐 Psalm Taint Analysis | 보안 취약점 분석 | SQL Injection, XSS, Command Injection, Path Traversal | 커밋 전 / CI/CD |
 | 📊 PHPMD | 코드 품질 분석 | 복잡도, 중복 코드, 네이밍, 사용하지 않는 코드 | 커밋 전 / CI/CD |
 | ⚠️ Query Pattern Check | 쿼리 안티패턴 감지 | `Model::all()`, `DB::raw()`, `get()` 무분별 사용, `first()` null 체크 누락 | 커밋 전 / CI/CD |
+| 🔒 Composer Audit | 의존성 취약점 검사 | 알려진 CVE, 보안 패치 필요 패키지 | 커밋 전 / CI/CD |
 
 ### 런타임 모니터링 도구 (개발 환경)
 애플리케이션 실행 중에 문제를 감지하고 경고합니다.
@@ -41,10 +45,12 @@ AI 생성 코드를 포함하여 다음 도구들로 자동 검증합니다:
 composer check-all
 
 # 개별 실행
-composer pint-test     # 코드 스타일
-composer phpstan       # 정적 분석
-composer phpmd         # 코드 품질
-composer check:queries # 쿼리 패턴
+composer pint-test      # 코드 스타일
+composer phpstan        # 타입 안전성
+composer psalm:taint    # 보안 취약점 (Taint Analysis)
+composer phpmd          # 코드 품질
+composer check:queries  # 쿼리 패턴
+composer audit          # 의존성 취약점
 
 # 자동 수정
 composer fix
