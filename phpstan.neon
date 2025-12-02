@@ -10,14 +10,38 @@ parameters:
 
     level: 5
 
-    checkMissingIterableValueType: false
-
     # IDE Helper 파일 스캔
     scanFiles:
         - _ide_helper.php
         - _ide_helper_models.php
         - .phpstorm.meta.php
 
-    excludePaths:
-        - bootstrap/cache/*
-        - storage/*
+    ignoreErrors:
+        # Livewire 매직 메서드
+        - '#Call to an undefined method .*Livewire.*::(validate|dispatch|reset|redirect|redirectIntended)\(\)#'
+
+        # Laravel Route 매직 메서드
+        - '#Call to an undefined method Illuminate\\Routing\\Route::(name|middleware)\(\)#'
+
+        # Laravel Request 매직 메서드
+        - '#Call to an undefined method Illuminate\\Http\\Request::(session|input|ip)\(\)#'
+
+        # Laravel Schema 매직 메서드
+        - '#Call to an undefined static method Illuminate\\Support\\Facades\\Schema::connection\(\)#'
+
+        # User 모델 매직 메서드 (Fortify/Laravel 제공)
+        - '#Call to an undefined method App\\Models\\User::(hasVerifiedEmail|sendEmailVerificationNotification)\(\)#'
+
+        # Artisan 클로저의 $this
+        -
+            message: '#Undefined variable: \$this#'
+            path: routes/console.php
+
+        # Fortify User 모델 2FA 메서드
+        - '#Call to an undefined method App\\Models\\User::(hasEnabledTwoFactorAuthentication|twoFactorQrCodeSvg)\(\)#'
+
+        # Livewire 에러 처리 메서드
+        - '#Call to an undefined method .*Livewire.*::(addError|resetErrorBag)\(\)#'
+
+        # Fortify CreateNewUser 반환 타입 (실제로는 정상)
+        - '#Return type \(App\\Models\\User\) of method App\\Actions\\Fortify\\CreateNewUser::create\(\) should be compatible with return type \(Illuminate\\Foundation\\Auth\\User\)#'
