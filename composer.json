@@ -85,17 +85,20 @@
     "pint-test": "pint --test",
     "phpstan": "phpstan analyse --memory-limit=2G",
     "phpmd": "phpmd app,config,database,routes text phpmd.xml",
+    "check:queries": "php artisan check:queries",
     "check-code": [
       "Composer\\Config::disableProcessTimeout",
       "@pint-test",
       "@phpstan",
-      "@phpmd"
+      "@phpmd",
+      "@check:queries"
     ],
     "check-all": [
       "Composer\\Config::disableProcessTimeout",
       "@pint-test",
       "@phpstan",
-      "@phpmd"
+      "@phpmd",
+      "@check:queries"
     ],
     "fix": "pint"
   },

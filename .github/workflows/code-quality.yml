@@ -38,4 +38,4 @@ jobs:
         run: composer phpmd
 
       - name: Check Query Patterns
-        run: composer check:queries
+        run: composer run check:queries
