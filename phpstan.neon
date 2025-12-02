@@ -12,5 +12,12 @@ parameters:
 
     checkMissingIterableValueType: false
 
+    # IDE Helper 파일 스캔
+    scanFiles:
+        - _ide_helper.php
+        - _ide_helper_models.php
+        - .phpstorm.meta.php
+
     excludePaths:
-        - app/Console/Kernel.php
+        - bootstrap/cache/*
+        - storage/*
