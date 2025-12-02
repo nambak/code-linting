@@ -1,0 +1,41 @@
+name: Code Quality
+
+on: [push, pull_request]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo, sqlite
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Copy .env
+        run: |
+          cp .env.example .env
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=:memory:" >> .env
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Run Laravel Pint
+        run: composer pint-test
+
+      - name: Run PHPStan
+        run: composer phpstan
+
+      - name: Run PHPMD
+        run: composer phpmd
+
+      - name: Check Query Patterns
+        run: composer check:queries
