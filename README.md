@@ -7,6 +7,8 @@
 ![Psalm Level 5](https://img.shields.io/badge/Psalm-level%205-blueviolet)
 ![Code Style](https://img.shields.io/badge/code%20style-pint-orange)
 ![Security](https://img.shields.io/badge/security-composer%20audit-green)
+![Test Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-Pest%20v4-success)
 
 
 ## 🔍 코드 품질 검증
@@ -45,12 +47,17 @@ AI 생성 코드를 포함하여 다음 도구들로 자동 검증합니다:
 composer check-all
 
 # 개별 실행
-composer pint-test      # 코드 스타일
-composer phpstan        # 타입 안전성
-composer psalm:taint    # 보안 취약점 (Taint Analysis)
-composer phpmd          # 코드 품질
-composer check:queries  # 쿼리 패턴
-composer audit          # 의존성 취약점
+composer pint-test       # 코드 스타일
+composer phpstan         # 타입 안전성
+composer psalm:taint     # 보안 취약점 (Taint Analysis)
+composer phpmd           # 코드 품질
+composer check:queries   # 쿼리 패턴
+composer audit           # 의존성 취약점
+
+# 테스트
+composer test                  # 유닛/기능 테스트 (Pest)
+composer test:coverage         # 테스트 + 커버리지 (최소 80%)
+composer test:coverage-html    # HTML 커버리지 리포트 생성
 
 # 자동 수정
 composer fix
@@ -58,4 +65,32 @@ composer fix
 # Telescope 대시보드
 php artisan serve
 # http://localhost:8000/telescope
+```
+
+## 🧪 테스트
+
+이 프로젝트는 **Pest v4**를 사용하여 테스트합니다:
+
+- **유닛 테스트**: 개별 클래스/메서드 단위 테스트
+- **기능 테스트**: 전체 기능 흐름 테스트 (인증, 설정, 대시보드 등)
+- **코드 커버리지**: 최소 80% 이상 유지 (CI/CD에서 검증)
+
+### 테스트 실행 방법
+
+```bash
+# 모든 테스트 실행
+php artisan test
+# 또는
+composer test
+
+# 커버리지와 함께 실행 (PCOV 또는 Xdebug 필요)
+composer test:coverage
+
+# HTML 리포트 생성 후 브라우저에서 확인
+composer test:coverage-html
+open coverage/index.html
+
+# 특정 테스트만 실행
+php artisan test --filter=testName
+php artisan test tests/Feature/Auth/AuthenticationTest.php
 ```

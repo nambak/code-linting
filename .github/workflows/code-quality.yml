@@ -14,7 +14,7 @@ jobs:
         with:
           php-version: '8.3'
           extensions: mbstring, pdo, sqlite
-          coverage: none
+          coverage: pcov
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
@@ -33,6 +33,9 @@ jobs:
           php artisan ide-helper:generate || true
           php artisan ide-helper:models --nowrite || true
           php artisan ide-helper:meta || true
+
+      - name: Run Tests with Coverage
+        run: composer test:coverage
 
       - name: Run Laravel Pint
         run: composer pint-test
