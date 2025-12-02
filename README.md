@@ -146,12 +146,12 @@ Queue::failing(function (JobFailed $event) {
 ### 테스트 실행 방법
 
 ```bash
-# 모든 테스트 실행
+# 모든 테스트 실행 (로컬 개발)
 php artisan test
 # 또는
 composer test
 
-# 커버리지와 함께 실행 (PCOV 또는 Xdebug 필요)
+# 커버리지와 함께 실행 (CI/CD 또는 PCOV/Xdebug 설치 시)
 composer test:coverage
 
 # HTML 리포트 생성 후 브라우저에서 확인
@@ -162,3 +162,21 @@ open coverage/index.html
 php artisan test --filter=testName
 php artisan test tests/Feature/Auth/AuthenticationTest.php
 ```
+
+### 코드 커버리지 설정 (선택사항)
+
+로컬 개발 환경에서 코드 커버리지를 측정하려면 PCOV 또는 Xdebug가 필요합니다.
+
+**Laravel Herd 사용자:**
+1. Herd 앱 열기
+2. Settings > PHP Extensions
+3. PCOV 또는 Xdebug 활성화
+
+**Homebrew PHP 사용자:**
+```bash
+pecl install pcov
+# 또는
+pecl install xdebug
+```
+
+**주의:** CI/CD 환경에서는 PCOV가 자동으로 설치되어 커버리지를 측정합니다.
