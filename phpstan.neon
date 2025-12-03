@@ -28,6 +28,10 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     ignoreErrors:
+        # Laravel Str 헬퍼 메서드 (Larastan 알려진 이슈)
+        # @see https://github.com/larastan/larastan/issues/1970
+        - '#Call to an undefined static method Illuminate\\Support\\Str::(of|substr|lower|transliterate|slug|random)\(\)#'
+
         # Livewire 매직 메서드
         - '#Call to an undefined method .*Livewire.*::(validate|dispatch|reset|redirect|redirectIntended)\(\)#'
 
