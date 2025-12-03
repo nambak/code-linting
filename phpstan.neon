@@ -10,6 +10,10 @@ parameters:
 
     level: 5
 
+    # Laravel 부트스트랩을 통해 모든 클래스와 매크로 로드
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+
     # IDE Helper 파일이 있으면 스캔 (없어도 오류 발생 안함)
     scanFiles:
         - _ide_helper.php
