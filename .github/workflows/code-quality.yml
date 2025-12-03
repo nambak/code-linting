@@ -39,9 +39,13 @@ jobs:
 
       - name: Generate IDE Helper files
         run: |
-          php artisan ide-helper:generate || true
-          php artisan ide-helper:models --nowrite || true
-          php artisan ide-helper:meta || true
+          php artisan ide-helper:generate
+          php artisan ide-helper:models --nowrite
+          php artisan ide-helper:meta
+          ls -la _ide_helper*.php .phpstorm.meta.php 2>/dev/null || echo "IDE Helper files not found"
+
+      - name: Dump Autoload
+        run: composer dump-autoload
 
       - name: Clear PHPStan Cache
         run: vendor/bin/phpstan clear-result-cache
