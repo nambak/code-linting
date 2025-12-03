@@ -43,6 +43,9 @@ jobs:
           php artisan ide-helper:models --nowrite || true
           php artisan ide-helper:meta || true
 
+      - name: Clear PHPStan Cache
+        run: vendor/bin/phpstan clear-result-cache
+
       - name: Build Frontend Assets
         run: npm run build
 
