@@ -56,4 +56,18 @@ class UserFactory extends Factory
             'two_factor_confirmed_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the model has two-factor authentication enabled.
+     */
+    public function withTwoFactorEnabled(): static
+    {
+        $recoveryCodes = ['code1', 'code2', 'code3', 'code4', 'code5', 'code6', 'code7', 'code8'];
+
+        return $this->state(fn (array $attributes) => [
+            'two_factor_secret' => encrypt('test-secret'),
+            'two_factor_recovery_codes' => encrypt(json_encode($recoveryCodes)),
+            'two_factor_confirmed_at' => now(),
+        ]);
+    }
 }
