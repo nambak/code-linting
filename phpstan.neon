@@ -16,6 +16,10 @@ parameters:
         - _ide_helper_models.php
         - .phpstorm.meta.php
 
+    # Laravel Support 클래스들을 명시적으로 스캔
+    scanDirectories:
+        - ./vendor/laravel/framework/src/Illuminate/Support
+
     # 존재하지 않는 파일 스캔 오류 무시
     reportUnmatchedIgnoredErrors: false
 
