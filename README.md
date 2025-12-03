@@ -1,4 +1,4 @@
-# code-linting
+# Laravel Code Quality Starter Kit
 
 ![Code Quality](https://github.com/nambak/code-linting/actions/workflows/code-quality.yml/badge.svg)
 ![PHP Version](https://img.shields.io/badge/PHP-8.3-blue)
@@ -10,6 +10,60 @@
 ![Test Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)
 ![Tests](https://img.shields.io/badge/tests-Pest%20v4-success)
 
+> 📦 **Laravel 12 프로젝트를 위한 코드 품질 검증 스타터 킷**
+> AI 생성 코드를 포함한 모든 코드의 품질, 보안, 성능을 자동으로 검증합니다.
+
+## 🚀 빠른 시작
+
+### 이 템플릿으로 새 프로젝트 시작하기
+
+1. **GitHub에서 "Use this template" 클릭**
+2. 저장소 이름 입력하고 생성
+3. 클론 후 설정:
+
+```bash
+# 프로젝트 클론
+git clone https://github.com/your-username/your-project.git
+cd your-project
+
+# 초기 설정 (의존성 설치, .env 생성, 키 생성, 마이그레이션, 에셋 빌드)
+composer setup
+
+# 개발 서버 시작 (서버 + 큐 + 로그 + Vite)
+composer run dev
+```
+
+### 기존 Laravel 프로젝트에 적용하기
+
+```bash
+# 1. 필요한 패키지 설치
+composer require --dev larastan/larastan phpmd/phpmd beyondcode/laravel-query-detector
+composer require --dev laravel/telescope barryvdh/laravel-ide-helper
+
+# 2. 설정 파일 복사
+# 다음 파일들을 프로젝트에 복사:
+# - phpstan.neon
+# - phpstan-bootstrap.php
+# - phpmd.xml
+# - pint.json
+# - .github/workflows/code-quality.yml
+
+# 3. composer.json의 scripts 섹션 복사
+
+# 4. 코드 품질 검사 실행
+composer check-all
+```
+
+## 📋 포함된 설정
+
+| 파일 | 설명 |
+|------|------|
+| `phpstan.neon` | PHPStan Level 5 설정 + Larastan + IDE Helper |
+| `phpstan-bootstrap.php` | PHPStan 부트스트랩 (autoload) |
+| `phpmd.xml` | PHPMD 규칙 (Laravel 최적화) |
+| `pint.json` | Laravel Pint 코드 스타일 설정 |
+| `.github/workflows/code-quality.yml` | GitHub Actions CI/CD 워크플로우 |
+| `app/Console/Commands/CheckQueryPatterns.php` | 쿼리 안티패턴 감지 명령어 |
 
 ## 🔍 코드 품질 검증
 
